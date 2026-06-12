@@ -1,0 +1,13 @@
+# Ignore source datasets to save space
+tmdb_5000_credits.csv
+tmdb_5000_movies.csv
+
+# Ignore notebook and export scripts
+mrs.ipynb
+export_model.py
+.ipynb_checkpoints/
+
+# Ignore local environment folders
+venv/
+env/
+__pycache__/

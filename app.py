@@ -2,8 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+import gzip
 
 # ─────────────────────────────────────────────────────────────
 # Page configuration
@@ -56,18 +55,13 @@ def fetch_movie_details(movie_id):
 
 
 # ─────────────────────────────────────────────────────────────
-# Load model artefacts and compute similarity
+# Load model artefacts
 # ─────────────────────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def load_data():
-    # Load movies metadata
     movies = pickle.load(open("movies.pkl", "rb"))
-    
-    # Compute similarity on the fly instead of loading a 184MB file
-    cv = CountVectorizer(max_features=5000, stop_words='english')
-    vectors = cv.fit_transform(movies['tags']).toarray()
-    similarity = cosine_similarity(vectors)
-    
+    with gzip.open("similarity.pkl.gz", "rb") as f:
+        similarity = pickle.load(f)
     return movies, similarity
 
 
